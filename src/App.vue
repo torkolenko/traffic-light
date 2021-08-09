@@ -1,11 +1,13 @@
 <template>
   <div id="app">
-    <div class="box">
-      <!-- <Timer></Timer> -->
-      <ColorSection statePath = "/red" class = "red"></ColorSection>
-      <ColorSection statePath = "/yellow" class = "yellow"></ColorSection>
-      <ColorSection statePath = "/green" class = "green"></ColorSection>
+    <div class = "container">
+      <div class="box">
+        <ColorSection statePath = "/red" class = "red" :count = count></ColorSection>
+        <ColorSection statePath = "/yellow" class = "yellow" :count = count></ColorSection>
+        <ColorSection statePath = "/green" class = "green" :count = count></ColorSection>
+      </div>
     </div>
+    <Timer :count = count></Timer>    
   </div>
 </template>
 
@@ -13,16 +15,15 @@
 <script>
 
 import ColorSection from './components/ColorSection'
-// import Timer from './components/Timer'
+import Timer from './components/Timer'
 
 export default {
   name: 'app',
   data() {
     return {
       nextPath: "",
-      delay: 0,
+      count: 0,
       forYellow: "/red",
-      // count: 0
     }
   },
   methods: {
@@ -33,55 +34,69 @@ export default {
         case "/":
         case '/red':
           this.nextPath = '/yellow';
-          this.delay = 10;
+          this.count = 10;
           break;
         case '/yellow':
           if (this.forYellow === "/red") this.nextPath = '/green';
           if (this.forYellow === "/green") this.nextPath = '/red';
-          this.delay = 3;
+          this.count = 3;
           break;
         case '/green':
           this.nextPath = '/yellow';
-          this.delay = 15;
+          this.count = 15;
           break;
       }
     },
-    
-    switchState(path, delay) {
-      setTimeout( () => this.$router.push({ path: path })
-        , delay * 1000);
-    },
-    // countDelay() {
-
-    // }
+    countDelay() {
+      
+      if (this.count) {
+        setTimeout (()=> {
+          --this.count;
+          return this.countDelay();
+        }, 1000);
+      } else {
+        this.$router.push({ path: this.nextPath });
+      }
+      
+    }
   },
+  
   created() {
     this.initState(this.$route.path);
   },
+  
   mounted() {
     this.$router.afterEach((to, from) => {
       this.initState(this.$route.path);
-      this.switchState(this.nextPath, this.delay);
+      
+      this.countDelay();
     });
-    this.switchState(this.nextPath, this.delay);
+    this.countDelay();
   },
+
   components: {
-    ColorSection
+    ColorSection,
+    Timer
   }
 }
 </script>
 
 <style scoped>
+
+  .container {
+    display: flex;
+    justify-content: center;
+  }
   .box {
     background-color: #5C5C5C;
     height: 200px;
     width: 75px;
     border-radius: 50px;
     display: flex;
+    flex-direction: column;
     justify-content: space-between;
     align-items: center;
     padding: 15px 0;
-    flex-direction: column;
   }
 
   .red {

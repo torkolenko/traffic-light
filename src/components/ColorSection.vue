@@ -4,7 +4,7 @@
 
 <script>
 export default {
-  props: ['statePath'],
+  props: ['statePath', 'count'],
   computed: {
     isActive() {
       return this.$route.path === this.statePath;

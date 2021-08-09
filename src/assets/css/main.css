@@ -2,13 +2,15 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+  
 }
 
 body {
   background-color: #EDEDED;
+  min-height: 100vh;
+  font-family: "Roboto", sans-serif;
   display: flex;
   justify-content: center;
   align-items: center;
-  min-height: 100vh;
-  font-family: "Roboto", sans-serif;
+
 }
