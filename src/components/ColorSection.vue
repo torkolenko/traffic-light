@@ -10,7 +10,10 @@ export default {
       return this.$route.path === this.statePath;
     },
     isFlashing() {
-      return this.count <= 3 && this.$route.path === this.statePath && this.$route.path !== "/yellow";
+      return ( this.count <= 3 
+        && this.$route.path === this.statePath 
+        && this.$route.path !== "/yellow" 
+      );
     }
   }
 }
@@ -30,23 +33,11 @@ export default {
   }
 
   .flashing {
-      animation-name: blinker;
-      animation-iteration-count: infinite;
-      animation-timing-function: cubic-bezier(1.0,0,0,1.0);
-      animation-duration: 0.9s;
-      -webkit-animation-name: blinker;
-      -webkit-animation-iteration-count: infinite;
-      -webkit-animation-timing-function: cubic-bezier(1.0,0,0,1.0);
-      -webkit-animation-duration: 0.9s;
+    animation: blinker 0.9s cubic-bezier(1.0,0,0,1.0) 0s infinite;
   }
 
   @keyframes blinker {
-   from { opacity: 1.0; }
-    to { opacity: 0.3; }
-  }
- 
-  @-webkit-keyframes blinker {
     from { opacity: 1.0; }
-    to { opacity: 0.5; }
+    to { opacity: 0.3; }
   }
 </style>

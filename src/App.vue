@@ -23,13 +23,14 @@ export default {
     return {
       nextPath: "",
       count: 0,
-      forYellow: "/red",
+      forYellow: "/red"
     }
   },
   methods: {
     initState(path) {
-      if (path === "/red" || path === "/green") this.forYellow = path;
       
+      if (path === "/red" || path === "/green") this.forYellow = path;
+
       switch (path) {
         case "/":
         case '/red':
@@ -47,12 +48,13 @@ export default {
           break;
       }
     },
-    countDelay() {
-      
+    saveCountOrChangeURL() {
       if (this.count) {
+        sessionStorage.count = this.count;
+        
         setTimeout (()=> {
           --this.count;
-          return this.countDelay();
+          return this.saveCountOrChangeURL();
         }, 1000);
       } else {
         this.$router.push({ path: this.nextPath });
@@ -63,15 +65,22 @@ export default {
   
   created() {
     this.initState(this.$route.path);
+    
+    if( sessionStorage.path === this.$route.path ) this.count = sessionStorage.count;
   },
   
   mounted() {
+    
     this.$router.afterEach((to, from) => {
       this.initState(this.$route.path);
       
-      this.countDelay();
+      sessionStorage.path = this.$route.path;
+      
+      this.saveCountOrChangeURL();
     });
-    this.countDelay();
+    sessionStorage.path = this.$route.path;
+    
+    this.saveCountOrChangeURL();
   },
 
   components: {
