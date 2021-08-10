@@ -19,7 +19,7 @@
 
 <style scoped>
   .text {
-    min-width: 250px;
+    min-width: 200px;
   }
   .value {
     min-width: 30px;
